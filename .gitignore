@@ -1,0 +1,15 @@
+.DS_Store
+*.pickle
+*.pkl
+*.csv
+*.tsv
+*.pyc
+*.ipynb_checkpoints
+*.gzip
+*.png
+*.jpg
+*.pdf
+*.hdf
+*.arrow
+*.parquet
+*.gz
