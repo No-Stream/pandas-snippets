@@ -1,4 +1,4 @@
-# Jan boilerplate, rev 2019/06/04
+# Jan boilerplate, rev 2019/06/11
 
 from datetime import datetime
 import os
@@ -47,28 +47,21 @@ from IPython.core.display import display, HTML
 display(HTML("<style>.container { width:90% !important; }</style>"))
 
 
-# # # 
-# Graph styling
+# # # Graph styling
 
 # big graphs
 %matplotlib inline
 plt.rcParams['figure.figsize'] = (10.6, 6)
-
-# big text
-font = {
-    'family' : 'normal',
-    'weight' : 'bold',
-    'size'   : 16
-}
-
-plt.rc('font', **font)
-
 # fix palette
 sns.set_context('talk')
 sns.set_palette('GnBu')
 sns.set_style('whitegrid')
 plt.style.use('fivethirtyeight')
-
+# big text
+font = {'family' : 'sans-serif',
+        'weight' : 'bold',
+        'size'   : 16}
+plt.rc('font', **font)
 # background
 plt.rcParams['figure.facecolor'] = '#f2f2f2'
 plt.rcParams['axes.edgecolor'] = '#f9f9f9'
