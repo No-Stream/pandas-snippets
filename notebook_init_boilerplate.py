@@ -52,11 +52,13 @@ display(HTML("<style>.container { width:90% !important; }</style>"))
 # big graphs
 %matplotlib inline
 plt.rcParams['figure.figsize'] = (10.6, 6)
-# fix palette
 sns.set_context('talk')
 sns.set_palette('GnBu')
 sns.set_style('whitegrid')
+# fix palette
 plt.style.use('fivethirtyeight')
+# fonts
+plt.rcParams['font.sans-serif'] = ['Karla', 'Helvetica Neue', 'Helvetica', 'Arial']
 # big text
 font = {'family' : 'sans-serif',
         'weight' : 'bold',
