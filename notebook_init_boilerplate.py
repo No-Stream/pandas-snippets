@@ -1,4 +1,4 @@
-# Jan boilerplate, rev 2019/06/11
+# Jan boilerplate, rev 2019/07/02
 
 from datetime import datetime
 import os
@@ -13,6 +13,7 @@ import scipy as sp
 import scipy.stats
 
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 import seaborn as sns
 
 import statsmodels
@@ -64,6 +65,9 @@ font = {'family' : 'sans-serif',
         'weight' : 'bold',
         'size'   : 16}
 plt.rc('font', **font)
+# slightly thinner linewidth, smaller markers
+mpl.rcParams['lines.linewidth'] = 2.0
+mpl.rcParams['lines.markersize'] = 10
 # background
 plt.rcParams['figure.facecolor'] = '#f2f2f2'
 plt.rcParams['axes.edgecolor'] = '#f9f9f9'
