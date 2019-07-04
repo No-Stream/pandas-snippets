@@ -1,4 +1,4 @@
-# Jan boilerplate, rev 2019/07/02
+# Jan boilerplate, rev 2019/07/04
 
 from datetime import datetime
 import os
@@ -19,6 +19,8 @@ import seaborn as sns
 import statsmodels
 import statsmodels.api as sm
 import sklearn as skl
+
+import pymc3
 
 import xgboost as xgb
 
@@ -59,7 +61,9 @@ sns.set_style('whitegrid')
 # fix palette
 plt.style.use('fivethirtyeight')
 # fonts
-plt.rcParams['font.sans-serif'] = ['Karla', 'Helvetica Neue', 'Helvetica', 'Arial']
+plt.rcParams['font.sans-serif'] = ['Karla', 'Helvetica Neue Regular', 'Helvetica Neue', 'Helvetica', 'Arial']
+plt.rcParams['font.serif'] = ['Cambria', 'Garamond', 'Times New Roman']
+plt.rcParams['font.family'] = "sans-serif"
 # big text
 font = {'family' : 'sans-serif',
         'weight' : 'bold',
@@ -67,7 +71,7 @@ font = {'family' : 'sans-serif',
 plt.rc('font', **font)
 # slightly thinner linewidth, smaller markers
 mpl.rcParams['lines.linewidth'] = 2.0
-mpl.rcParams['lines.markersize'] = 10
+mpl.rcParams['lines.markersize'] = 6
 # background
 plt.rcParams['figure.facecolor'] = '#f2f2f2'
 plt.rcParams['axes.edgecolor'] = '#f9f9f9'
