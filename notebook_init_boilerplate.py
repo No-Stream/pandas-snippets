@@ -1,4 +1,4 @@
-# Jan boilerplate, rev 2019/07/04
+# Jan boilerplate, rev 2019/07/08
 
 from datetime import datetime
 import os
@@ -54,19 +54,20 @@ display(HTML("<style>.container { width:90% !important; }</style>"))
 
 # big graphs
 %matplotlib inline
-plt.rcParams['figure.figsize'] = (10.6, 6)
 sns.set_context('talk')
 sns.set_palette('GnBu')
 sns.set_style('whitegrid')
 # fix palette
 plt.style.use('fivethirtyeight')
+plt.rcParams['figure.figsize'] = (10.6, 6)
 # fonts
-plt.rcParams['font.sans-serif'] = ['Karla', 'Helvetica Neue Regular', 'Helvetica Neue', 'Helvetica', 'Arial']
-plt.rcParams['font.serif'] = ['Cambria', 'Garamond', 'Times New Roman']
+plt.rcParams['font.sans-serif'] = ['Frutiger CE 55 Roman', 'Helvetica', 'sans-serif']
+plt.rcParams['font.serif'] = ['Optima', 'serif']
+plt.rcParams['font.monospace'] = ['Roboto Mono']
 plt.rcParams['font.family'] = "sans-serif"
 # big text
 font = {'family' : 'sans-serif',
-        'weight' : 'bold',
+        'weight' : 'regular',
         'size'   : 16}
 plt.rc('font', **font)
 # slightly thinner linewidth, smaller markers
