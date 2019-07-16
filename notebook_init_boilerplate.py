@@ -1,4 +1,4 @@
-# Jan boilerplate, rev 2019/07/09
+# Jan boilerplate, rev 2019/07/15
 
 from datetime import datetime
 import os
@@ -54,6 +54,8 @@ display(HTML("<style>.container { width:90% !important; }</style>"))
 
 # big graphs
 %matplotlib inline
+%config InlineBackend.figure_format = 'retina'
+
 sns.set_context('talk')
 sns.set_palette('GnBu')
 sns.set_style('whitegrid')
