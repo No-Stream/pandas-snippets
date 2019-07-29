@@ -1,4 +1,4 @@
-# Jan boilerplate, rev 2019/07/15
+# Jan boilerplate, rev 2019/07/24
 
 from datetime import datetime
 import os
@@ -16,11 +16,9 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import seaborn as sns
 
-import statsmodels
-import statsmodels.api as sm
 import sklearn as skl
 
-import pymc3
+import pymc3 as pm
 
 import xgboost as xgb
 
@@ -28,7 +26,7 @@ import xgboost as xgb
 assert(sys.version_info >= (3, 4))
 
 print(f'Python version: {sys.version}')
-print(f'Pandas version: {pd.__version__}')
+pd.show_versions()
 print('Working directory: ', os.getcwd())
 print(f'Current time {datetime.now()}')
 
