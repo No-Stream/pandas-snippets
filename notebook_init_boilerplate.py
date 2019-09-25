@@ -61,7 +61,7 @@ sns.set_style('whitegrid')
 plt.style.use('fivethirtyeight')
 plt.rcParams['figure.figsize'] = (10.6, 6)
 # fonts
-plt.rcParams['font.sans-serif'] = ['SchulbuchNord Normal', 'Frutiger CE 55 Roman', 'Helvetica', 'sans-serif']
+plt.rcParams['font.sans-serif'] = ['Univers LT Std 55 Roman', 'Frutiger CE 55 Roman', 'SchulbuchNord Normal', 'Helvetica', 'sans-serif']
 plt.rcParams['font.serif'] = ['Optima', 'serif']
 plt.rcParams['font.monospace'] = ['Roboto Mono']
 plt.rcParams['font.family'] = "sans-serif"
@@ -74,9 +74,10 @@ plt.rc('font', **font)
 mpl.rcParams['lines.linewidth'] = 2.0
 mpl.rcParams['lines.markersize'] = 6
 # background
-plt.rcParams['figure.facecolor'] = '#f2f2f2'
-plt.rcParams['axes.edgecolor'] = '#f9f9f9'
-plt.rcParams['axes.facecolor'] = '#f9f9f9'
+plt.rcParams['figure.facecolor'] = 'white'
+plt.rcParams['axes.edgecolor'] = 'white'
+plt.rcParams['axes.facecolor'] = 'white'
+plt.rcParams['savefig.facecolor'] = 'white'
 # plot colors
 from cycler import cycler
 hexes = ['#008fd5', '#d14e23', '#8ac42f', '#54904f', '#5cadab', '#540f91', '#ff1cb0', '#ffa01c']
