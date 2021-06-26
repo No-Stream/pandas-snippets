@@ -104,6 +104,8 @@ def plot_univariate(
                         this_df[feat] <= empirical99pct
                     )
 
+                    graph_sample = min(graph_sample, len(this_df.loc[fil_outliers]))
+                    
                     plot_lowess = not is_binary_outcome
                     sns.regplot(
                         x=feat,
