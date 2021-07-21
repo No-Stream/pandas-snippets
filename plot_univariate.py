@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from pandas.api.types import is_numeric_dtype
+from tqdm import tqdm
 
 
 def plot_univariate(
@@ -13,6 +14,7 @@ def plot_univariate(
     cat_thresh: float = 0.001,
     graph_sample: int = 10_000,
     cat_freq_thresh: float = 0.01,
+    do_scatter: bool = True,
 ) -> None:
     """
     Plot a list of features compared to outcome.
@@ -29,12 +31,13 @@ def plot_univariate(
 
     is_binary_outcome = df[y_col].nunique() == 2
 
-    for feat in feats:
+    for feat in tqdm(feats):
         try:
             this_df = df.copy().dropna(subset=[feat, y_col])
 
-            is_cat = (this_df[feat].dtype == "object") or (
-                hasattr(this_df[feat], 'cat')
+            is_cat = (
+              (this_df[feat].dtype == "object") or 
+              (hasattr(this_df[feat], 'cat'))
             )
 
             cardinality = this_df[feat].nunique()
@@ -88,6 +91,7 @@ def plot_univariate(
                         y=this_df[y_col].sample(graph_sample, random_state=42),
                         scatter_kws={"alpha": 0.2},
                         lowess=True,
+                        scatter=do_scatter,
                     )
                     plt.title(f"{y_col} vs {feat} (as seconds since min.)")
                     plt.show()
@@ -117,6 +121,7 @@ def plot_univariate(
                     scatter_kws={"alpha": 0.2},
                     lowess=plot_lowess,
                     logistic=is_binary_outcome,
+                    scatter=do_scatter,
                 )
                 plt.title(f"Regress {feat} on {y_col}.")
                 plt.show()
@@ -125,5 +130,6 @@ def plot_univariate(
               warnings.warn(f"Unhandled column {feat}")
               
         except Exception as err:
-            warnings.warn(err)
+            warnings.warn(str(err))
             pass
+        
