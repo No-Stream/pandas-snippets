@@ -11,17 +11,19 @@ def plot_univariate(
     df,
     feats: List[str],
     y_col: str,
-    cat_thresh: float = 0.001,
+    coerce_cat_thresh: float = 0.001,
     graph_sample: int = 10_000,
     cat_freq_thresh: float = 0.01,
     do_scatter: bool = True,
+    ylabel: str = None,
 ) -> None:
     """
     Plot a list of features compared to outcome.
     df: pd.DataFrame, containing relevant data
     feats: list[str], colnames of x features to graph against your outcome
     y_col: str, name of your outcome column, assume it's continuous
-    cat_thresh: float, will manually consider x cols to be cats len(df.col.unique()) < cat_thresh * len(df.col)
+    coerce_cat_thresh: float, will manually consider x cols to be cats if 
+      len(df.col.unique()) < cat_thresh * len(df.col)
       E.G. by default if less than 0.1% unique values, consider it to be categorical.
     graph_sample: int, how many data points to use for scatter graphs (gets messy with too many)
     cat_freq_thresh: float, % of the non-NA values of the column must be x in order to graph it.
@@ -45,10 +47,17 @@ def plot_univariate(
 
             is_dt = "datetime" in this_df[feat].dtype.name  # HACK
             is_numeric = is_numeric_dtype(this_df[feat])
+            is_binary = cardinality == 2
+            plot_lowess = not is_binary_outcome
+            
+            graph_as_cat = ((
+              is_cat 
+              or (rel_cardinality < coerce_cat_thresh)
+            ) and not is_dt and not is_numeric) or is_binary
 
-            if (is_cat or (rel_cardinality < cat_thresh)) and not is_dt and not is_numeric:
+            if graph_as_cat:
                 freqs = this_df[feat].value_counts(normalize=True)
-                # Filter on level of var occurred 100+ times; sort by freq
+                # Filter on level of var occurred > cat_freq_thresh % of times; sort by freq
                 freqs = freqs.loc[freqs >= cat_freq_thresh]
                 levels_to_eval = freqs.index
 
@@ -62,7 +71,9 @@ def plot_univariate(
                     order=levels_to_eval,
                 )
                 plt.xticks(rotation=90)
-                plt.title(f"Outcome {y_col} vs {feat}")
+                plt.title(f"{feat} -> {y_col}?")
+                if ylabel:
+                    plt.ylabel(ylabel)
                 plt.show()
 
             # consider dt to be integer seconds since UNIX epoch
@@ -90,10 +101,20 @@ def plot_univariate(
                         x=epoch_since_min.sample(graph_sample, random_state=42),
                         y=this_df[y_col].sample(graph_sample, random_state=42),
                         scatter_kws={"alpha": 0.2},
-                        lowess=True,
+                        lowess=plot_lowess,
+                        logistic=is_binary_outcome,
                         scatter=do_scatter,
                     )
-                    plt.title(f"{y_col} vs {feat} (as seconds since min.)")
+                    if not plot_lowess:  # also plot lowess for binary outcomes
+                      sns.regplot(
+                          x=epoch_since_min.sample(graph_sample, random_state=42),
+                          y=this_df[y_col].sample(graph_sample, random_state=42),
+                          lowess=True,
+                          scatter=False,
+                      )
+                    plt.title(f"{feat} (as seconds since min.) ->  {y_col}?")
+                    if ylabel:
+                        plt.ylabel(ylabel)
                     plt.show()
 
             # numeric feature, use regplot
@@ -110,26 +131,38 @@ def plot_univariate(
                 )
 
                 graph_sample = min(graph_sample, len(this_df.loc[fil_outliers]))
-
-                plot_lowess = not is_binary_outcome
+                
+                sampled = (
+                  this_df.loc[fil_outliers, [feat, y_col]]
+                    .sample(graph_sample, random_state=42)
+                    .astype('float')
+                )
                 sns.regplot(
                     x=feat,
                     y=y_col,
-                    data=this_df.loc[fil_outliers].sample(
-                        graph_sample, random_state=42
-                    ),
+                    data=sampled,
                     scatter_kws={"alpha": 0.2},
                     lowess=plot_lowess,
                     logistic=is_binary_outcome,
                     scatter=do_scatter,
                 )
-                plt.title(f"Regress {feat} on {y_col}.")
+                if not plot_lowess:  # also plot lowess for binary outcomes
+                  sns.regplot(
+                      x=feat,
+                      y=y_col,
+                      data=sampled,
+                      lowess=True,
+                      scatter=False,
+                  )
+                plt.title(f"{feat} -> {y_col}?")
+                if ylabel:
+                    plt.ylabel(ylabel)
                 plt.show()
                 
             else:
               warnings.warn(f"Unhandled column {feat}")
               
         except Exception as err:
+            warnings.warn(f"Error for feature {feat}.")
             warnings.warn(str(err))
             pass
-        
